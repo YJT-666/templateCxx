@@ -1,0 +1,85 @@
+# A common Makefile for c++ programs, version 1.0
+# Copyright (C) 2023 JTsmileY  
+
+# source code directory
+VPATH=src:src/lib
+
+# set output directory
+
+
+# set TAR_BIN
+TAR_BIN = bb
+
+# set g++ parameter
+CXXFLAGS += -g 
+CPPFLAGS += -I. -I./inc
+
+SRC_DIR = $(subst :, ,$(VPATH))
+SRC_C_LIST = $(notdir $(foreach dir,$(SRC_DIR),$(wildcard $(dir)/*.c)))
+SRC_D_LIST = $(patsubst %.c,%.d,$(SRC_C))
+OBJ_LIST = $(patsubst %.c,%.o,$(SRC_C))
+
+
+############################################
+all : $(TAR_BIN)
+
+obj : $(OBJ_LIST)
+
+
+$(TAR_BIN) : $(OBJ_LIST)
+	$(CXX) -g -o $@ $^
+
+
+
+###########################################
+# auto generate .d according to .cpp
+%.d : %.cpp
+	set -e; rm -f $(@); \
+	$(CXX) -MM $(CPPFLAGS) $(<) > $(@).$$$$; \
+	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$
+
+
+###########################################
+env_info:
+	@echo VPATH=$(VPATH)
+	@echo CFLAGS=$(CPPFLAGS)
+	@echo CXXFLAGS=$(CXXFLAGS)
+	
+
+
+install:
+
+print:
+
+tar:
+
+tags:
+
+check:
+
+test:
+
+help:
+	@echo "===============A common Makefile for cprograms==============" 
+	@echo "Copyright (C) 2023 2/21 JTsmileY" 
+	@echo "The following targets are support:" 
+	@echo 
+	@echo " all             - (==make) compile and link" 
+	@echo " obj             - just compile, without link" 
+	@echo " clean           - clean target" 
+	@echo " dist            - clean target and other information" 
+	@echo " tags            - create ctags for vim editor" 
+	@echo " help            - print help information" 
+	@echo 
+	@echo "To make a target, do 'make [target]'" 
+	@echo "========================= Version 1.0=======================" 
+	
+
+clean:
+	$(RM) $(SRC_OBJ) $(SRC_BIN)
+	
+dist:
+	$(RM) $(SRC_OBJ) $(SRC_BIN)
+	
+.PHNOY : env_info all install print tar dist tags check test clean obj
