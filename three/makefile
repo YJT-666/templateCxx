@@ -37,7 +37,7 @@ $(MODULES):
 	@$(MAKE) -C $(DIR)/$@
 
 # you need to determine the order of module compilation!!!!
-main : display
+main : $(filter-out main,$(MODULES))
 
 clean : 
 	@for subdir in $(MODULES);do $(MAKE) -C $(DIR)/$$subdir $@;done 

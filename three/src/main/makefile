@@ -1,13 +1,16 @@
 # main moudle makefile
-MODULE=main
+ifndef MODULE
+	MODULE=main
+endif
 # project root dir
 SRC_BASE = ../..
 LIBS_DIR = $(SRC_BASE)/lib
 
 CXXFLAGS += 
-CPPFLAGS += -I. -I./inc -I$(SRC_BASE)/include/display
-LDFLAGS += -L$(LIBS_DIR)
+CPPFLAGS += -I. -I./inc -I$(SRC_BASE)/include
+CPPFLAGS +=	-I$(SRC_BASE)/include/display 
 
+LDFLAGS += -L$(LIBS_DIR)
 LIBS:=$(shell ls $(LIBS_DIR))
 LDFLAGS += $(patsubst lib%.a,-l%,$(LIBS))
 

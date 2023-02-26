@@ -1,12 +1,15 @@
 # submoudle makefile
-MODULE=display
+ifndef MODULE
+	MODULE=display
+endif
 
 # project root dir
 SRC_BASE = ../..
 
 CXXFLAGS += 
-CPPFLAGS += -I. -I./inc -I$(SRC_BASE)/include/display/ 
+CPPFLAGS += -I. -I./inc -I$(SRC_BASE)/include/$(MODULE)
 LDFLAGS += -lncurses
+
 ifeq ($(DEBUG_SYMBOLS),)	
 	DEBUG_SYMBOLS=TRUE
 endif
